@@ -6,7 +6,7 @@ A [MinUI](https://github.com/shauninman/MinUI) and [NextUI](https://github.com/L
 
 This pak is designed and tested on the following MinUI Platforms and devices:
 
-- `tg5040`: Trimui Brick (formerly `tg3040`)
+- `tg5040`: Trimui Smart Pro
 
 The pak may work on other platforms and devices, but it has not been tested on them.
 
@@ -19,8 +19,6 @@ The pak may work on other platforms and devices, but it has not been tested on t
 5. Confirm that there is a `/Emus/<PLATFORM>/PSP.pak/launch.sh` file on your SD card.
 6. Create a folder at `/Roms/PlayStation Portable (PSP)` and place your ROMs in this directory.
 7. Unmount your SD Card and insert it into your MinUI device.
-
-Note: The `<PLATFORM>` folder name is based on the name of your device. For example, if you are using a TrimUI Brick, the folder is `tg5040`.
 
 ## Extra Controls
 
