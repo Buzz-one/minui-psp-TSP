@@ -1,7 +1,7 @@
 ## About this fork
 
 - PPSSPP 1.18.1 for Trimui Smart Pro
-- Check [Wiki](https://github.com/Buzz-one/minui-psp-TSP/wiki) for more information on changes.
+- Check [Wiki](https://github.com/Buzz-one/minui-psp-TSP/wiki/About-this-Fork) for more information on changes.
 
 
 
