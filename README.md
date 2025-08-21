@@ -23,7 +23,6 @@ The pak may work on other platforms and devices, but it has not been tested on t
 ## Extra Controls
 
 - `Menu` - Open the PPSSPP menu.
-- `R2` - Swap between the D-Pad and the Analog Stick.
 
 ## Deep Sleep & Shutdown
 
