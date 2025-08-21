@@ -24,7 +24,14 @@ export EMU_DIR="$PAK_DIR/PPSSPPSDL"
 export PATH="$EMU_DIR:$PAK_DIR/bin/$architecture:$PAK_DIR/bin/$PLATFORM:$PAK_DIR/bin:$PATH"
 export HOME="$EMU_DIR"
 
-PPSSPP_BIN="PPSSPPSDL"
+# Detect Trimui model (Brick or Smart Pro)
+TRIMUI_MODEL=$(strings /usr/trimui/bin/MainUI | grep ^Trimui)
+
+if [ "$TRIMUI_MODEL" = "Trimui Brick" ]; then
+    PPSSPP_BIN="PPSSPPSDL-tg3040"
+else
+    PPSSPP_BIN="PPSSPPSDL-tg5040"
+fi
 
 cleanup() {
     rm -f /tmp/stay_awake
