@@ -17,8 +17,9 @@ if uname -m | grep -q '64'; then
     architecture=arm64
 fi
 
-export PAK_DIR="$SDCARD_PATH/Emus/$PLATFORM/PSP.pak"
-export EMU_DIR="$SDCARD_PATH/Emus/$PLATFORM/PSP.pak/PPSSPPSDL"
+# Dinamic detection of .PAK name that avoid breaking code if user interact with paks or routes
+export PAK_DIR="$SDCARD_PATH/Emus/$PLATFORM/$PAK_NAME.pak"
+export EMU_DIR="$PAK_DIR/PPSSPPSDL"
 
 export PATH="$EMU_DIR:$PAK_DIR/bin/$architecture:$PAK_DIR/bin/$PLATFORM:$PAK_DIR/bin:$PATH"
 export HOME="$EMU_DIR"
