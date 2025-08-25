@@ -29,9 +29,24 @@ TRIMUI_MODEL=$(strings /usr/trimui/bin/MainUI | grep ^Trimui)
 
 if [ "$TRIMUI_MODEL" = "Trimui Brick" ]; then
     PPSSPP_BIN="PPSSPPSDL-tg3040"
+    	AspectRatio_New="0.848000"
 else
     PPSSPP_BIN="PPSSPPSDL-tg5040"
+    	AspectRatio_New="1.000000"
 fi
+
+configuration() {
+    INI_FILE="$EMU_DIR/.config/ppsspp/PSP/SYSTEM/ppsspp.ini"
+    mkdir -p "$(dirname "$INI_FILE")"
+
+    if [ -n "$AspectRatio_New" ]; then
+        if grep -q ^DisplayAspectRatio "$INI_FILE"; then
+            sed -i "s/^DisplayAspectRatio *= *.*/DisplayAspectRatio = $AspectRatio_New/" "$INI_FILE"
+        else
+            echo "DisplayAspectRatio = $AspectRatio_New" >> "$INI_FILE"
+        fi
+    fi
+}
 
 cleanup() {
     rm -f /tmp/stay_awake
@@ -72,6 +87,10 @@ main() {
     mkdir -p "$EMU_DIR/.config/ppsspp/PSP/PPSSPP_STATE"
     mount -o bind "$SHARED_USERDATA_PATH/PSP-ppsspp" "$EMU_DIR/.config/ppsspp/PSP/PPSSPP_STATE"
 
+    # Apply dynamic configuration
+    configuration
+
+    # Launch emulator
     minui-power-control "$PPSSPP_BIN" &
     "$PPSSPP_BIN" "$*"
 }
