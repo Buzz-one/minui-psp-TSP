@@ -17,13 +17,38 @@ if uname -m | grep -q '64'; then
     architecture=arm64
 fi
 
-export PAK_DIR="$SDCARD_PATH/Emus/$PLATFORM/PSP.pak"
-export EMU_DIR="$SDCARD_PATH/Emus/$PLATFORM/PSP.pak/PPSSPPSDL"
+export PAK_DIR="$SDCARD_PATH/Emus/$PLATFORM/$PAK_NAME.pak"
+export EMU_DIR="$PAK_DIR/PPSSPPSDL"
 
 export PATH="$EMU_DIR:$PAK_DIR/bin/$architecture:$PAK_DIR/bin/$PLATFORM:$PAK_DIR/bin:$PATH"
 export HOME="$EMU_DIR"
 
 PPSSPP_BIN="PPSSPPSDL"
+PPSSPP_INI="$EMU_DIR/.config/ppsspp/PSP/SYSTEM/ppsspp.ini"
+
+configure_aspect_ratio() {
+    # Detect Trimui model (Brick or Smart Pro)
+    trimui_model=$(strings /usr/trimui/bin/MainUI | grep ^Trimui)
+
+    if [ "$trimui_model" = "Trimui Brick" ]; then
+        new_aspect_ratio="0.848000"
+    else
+        new_aspect_ratio="1.000000"
+    fi
+
+    if [ ! -f "$PPSSPP_INI" ]; then
+        echo "Error: $PPSSPP_INI not found."
+        exit 1
+    fi
+
+    if [ -n "$new_aspect_ratio" ]; then
+        if grep -q ^DisplayAspectRatio "$PPSSPP_INI"; then
+            sed -i "s/^DisplayAspectRatio *= *.*/DisplayAspectRatio = $new_aspect_ratio/" "$PPSSPP_INI"
+        else
+            echo "DisplayAspectRatio = $new_aspect_ratio" >> "$PPSSPP_INI"
+        fi
+    fi
+}
 
 cleanup() {
     rm -f /tmp/stay_awake
@@ -64,6 +89,10 @@ main() {
     mkdir -p "$EMU_DIR/.config/ppsspp/PSP/PPSSPP_STATE"
     mount -o bind "$SHARED_USERDATA_PATH/PSP-ppsspp" "$EMU_DIR/.config/ppsspp/PSP/PPSSPP_STATE"
 
+    # Apply dynamic configuration of aspect ratio
+    configure_aspect_ratio
+
+    # Launch emulator
     minui-power-control "$PPSSPP_BIN" &
     "$PPSSPP_BIN" "$*"
 }
